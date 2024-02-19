@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, request
 from hermes import *
 
 app = Flask(__name__)
@@ -9,6 +9,7 @@ app = Flask(__name__)
 def hermes():
     chain = request.args.get('chain')
     channel = request.args.get('channel')
+    
     if chain and channel is not None:
         resp = runHermes(chain,channel)
         return resp
@@ -17,4 +18,7 @@ def hermes():
     return err
 
 if __name__ == '__main__':
+    import logging
+    logging.basicConfig(filename='error.log',level=logging.DEBUG)
+
     app.run(debug=True)

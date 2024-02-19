@@ -2,7 +2,7 @@ import subprocess
 from datetime import datetime, timezone
 from get_time import display_time
 
-dir = "/home/hermes/config.toml"
+
 
 def getClient(homeDir, chain, channel) :
     cmd = "hermes --config "+homeDir+" --json query channel client --chain "+chain+" --port transfer  --channel " + channel +" | jq -r .result.client_id"
@@ -30,23 +30,39 @@ def checkTimestamp(t) :
     return resp
 
 def runHermes(chain, channel):
-    
+    dir = "/home/hermes/config.toml"
     client = getClient(dir, chain, channel)
-
+    if not client:
+        err = {}
+        err['error'] = "hermes not responding with client..."
+        return err
+    
     height = getHeight(dir, chain, client)
+    if not height:
+        err = {}
+        err['error'] = "hermes not responding with block height..."
+        return err
 
     time = getTimestamp(dir, chain, client, height)
+    if not time:
+        err = {}
+        err['error'] = "hermes not responding with time..."
+        return err
 
-    check = checkTimestamp(time)
-    if check:
-        ret = {}
-        ret['chain_id'] = chain
-        ret['channel_id'] = channel
-        ret['block_height'] = height
-        ret['client_id'] = client
-        ret['time_since_last_update'] = check
-        print(ret)
-        return ret
-    return "error"
+    if time:
+        check = checkTimestamp(time)
+        if check:
+            ret = {}
+            ret['chain_id'] = chain
+            ret['channel_id'] = channel
+            ret['block_height'] = height
+            ret['client_id'] = client
+            ret['time_since_last_update'] = check
+            print(ret)
+            return ret
+        return "error"
+    err = {}
+    err['error'] = "hermes not responding..."
+    return err
 
 

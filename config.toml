@@ -53,8 +53,8 @@ port = 5555
 
 [[ chains ]]
 id = 'osmosis-1'
-rpc_addr = 'http://localhost:26657'
-grpc_addr = 'http://localhost:26660'
+rpc_addr = 'http://localhost:26440'
+grpc_addr = 'http://localhost:26442'
 event_source = { mode = 'pull', interval = '1s' }
 rpc_timeout = '8s'
 type = "CosmosSdk"
