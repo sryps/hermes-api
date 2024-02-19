@@ -1,0 +1,78 @@
+[global]
+log_level = "info"
+
+[mode.clients]
+enabled = true
+refresh = true
+misbehaviour = true
+
+[mode.connections]
+enabled = false
+
+[mode.channels]
+enabled = false
+
+[mode.packets]
+enabled = true
+clear_interval = 100
+clear_on_start = true
+tx_confirmation = false
+auto_register_counterparty_payee = false
+
+[mode.packets.ics20_max_memo_size]
+enabled = true
+size = 32768
+
+[mode.packets.ics20_max_receiver_size]
+enabled = true
+size = 2048
+
+[rest]
+enabled = false
+host = "127.0.0.1"
+port = 3000
+
+[telemetry]
+enabled = false
+host = "127.0.0.1"
+port = 3001
+
+[telemetry.buckets.latency_submitted]
+start = 500
+end = 20000
+buckets = 10
+
+[telemetry.buckets.latency_confirmed]
+start = 1000
+end = 30000
+buckets = 10
+
+[tracing_server]
+enabled = false
+port = 5555
+
+[[ chains ]]
+id = 'osmosis-1'
+rpc_addr = 'http://localhost:26657'
+grpc_addr = 'http://localhost:26660'
+event_source = { mode = 'pull', interval = '1s' }
+rpc_timeout = '8s'
+type = "CosmosSdk"
+trusted_node = false
+account_prefix = 'osmo'
+key_name = 'keyname'
+address_type = { derivation = 'cosmos' }
+store_prefix = 'ibc'
+memo_prefix = ''
+gas_price = { price = 0.025, denom = 'uosmo' }
+default_gas = 600000
+max_gas = 1000000
+ccv_consumer_chain = false
+max_msg_num = 15
+gas_multiplier = 1.1
+max_tx_size = 180000
+clock_drift = '7200s'
+trusting_period = '14days'
+trust_threshold = { numerator = '2', denominator = '3' }
+clear_interval = 123
+packet_filter = { policy = 'allow', list = [['transfer', 'channel-0']] }
